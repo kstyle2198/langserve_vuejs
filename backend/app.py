@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from langserve import add_routes
 from langgraph.graph import Graph
-from langchain_core.runnables import RunnableLambda
 
 from langchain_groq import ChatGroq
 
@@ -35,6 +34,12 @@ graph_builder.add_edge("chatbot", END)
 workflow = graph_builder.compile()
 
 app = FastAPI()
+
+from fastapi.responses import RedirectResponse
+ 
+@app.get("/")
+async def redirect_root_to_docs():
+    return RedirectResponse("/docs")
 
 
 from fastapi.middleware.cors import CORSMiddleware
